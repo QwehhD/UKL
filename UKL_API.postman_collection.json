@@ -1,0 +1,302 @@
+{
+  "info": {
+    "name": "UKL API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "token_doctor",
+      "value": ""
+    },
+    {
+      "key": "token_patient",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Doctor",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"doctor@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"DOCTOR\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register Patient",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"patient@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"PATIENT\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login Doctor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.access_token) {",
+                  "  pm.collectionVariables.set('token_doctor', json.access_token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"doctor@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login Patient",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.access_token) {",
+                  "  pm.collectionVariables.set('token_patient', json.access_token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"patient@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patient Profile",
+      "item": [
+        {
+          "name": "Create Patient Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
+            ],
+            "url": "{{base_url}}/patient-profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"John Doe\",\n  \"age\": 30,\n  \"main_disease\": \"Diabetes\",\n  \"whatsapp_number\": \"081234567890\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
+            ],
+            "url": "{{base_url}}/patient-profile/me"
+          }
+        },
+        {
+          "name": "Get All Patients (Doctor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/patient-profile"
+          }
+        },
+        {
+          "name": "Update Patient Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
+            ],
+            "url": "{{base_url}}/patient-profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"John Doe Updated\",\n  \"age\": 31,\n  \"main_disease\": \"Hypertension\",\n  \"whatsapp_number\": \"081234567891\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Medicine",
+      "item": [
+        {
+          "name": "Create Medicine (Doctor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medicine",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Metformin\",\n  \"slot_number\": 1,\n  \"stock\": 100\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Medicines",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medicine"
+          }
+        },
+        {
+          "name": "Get Medicine by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medicine/:id",
+            "variable": [{ "key": "id", "value": "MEDICINE_ID_HERE" }]
+          }
+        },
+        {
+          "name": "Update Medicine (Doctor)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medicine/:id",
+            "variable": [{ "key": "id", "value": "MEDICINE_ID_HERE" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": 150\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Medicine (Doctor)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medicine/:id",
+            "variable": [{ "key": "id", "value": "MEDICINE_ID_HERE" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schedule",
+      "item": [
+        {
+          "name": "Create Schedule (Doctor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/schedule",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": \"PATIENT_USER_ID_HERE\",\n  \"medicine_id\": \"MEDICINE_ID_HERE\",\n  \"dose\": \"1 tablet\",\n  \"time\": \"08:00\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Schedules (Doctor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/schedule"
+          }
+        },
+        {
+          "name": "Get My Schedules (Patient)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
+            ],
+            "url": "{{base_url}}/schedule/me"
+          }
+        },
+        {
+          "name": "Get Schedule by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/schedule/:id",
+            "variable": [{ "key": "id", "value": "SCHEDULE_ID_HERE" }]
+          }
+        },
+        {
+          "name": "Update Schedule Status (Doctor)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/schedule/:id",
+            "variable": [{ "key": "id", "value": "SCHEDULE_ID_HERE" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"TRIGGERED\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Schedule (Doctor)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/schedule/:id",
+            "variable": [{ "key": "id", "value": "SCHEDULE_ID_HERE" }]
+          }
+        }
+      ]
+    }
+  ]
+}
