@@ -4,18 +4,9 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost:3000"
-    },
-    {
-      "key": "token_doctor",
-      "value": ""
-    },
-    {
-      "key": "token_patient",
-      "value": ""
-    }
+    { "key": "base_url", "value": "http://localhost:3000" },
+    { "key": "token_doctor", "value": "" },
+    { "key": "token_patient", "value": "" }
   ],
   "item": [
     {
@@ -281,7 +272,7 @@
             "variable": [{ "key": "id", "value": "SCHEDULE_ID_HERE" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"status\": \"TRIGGERED\"\n}"
+              "raw": "{\n  \"status\": \"MISSED\"\n}"
             }
           }
         },
@@ -294,6 +285,89 @@
             ],
             "url": "{{base_url}}/schedule/:id",
             "variable": [{ "key": "id", "value": "SCHEDULE_ID_HERE" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Medication Consumption",
+      "item": [
+        {
+          "name": "Submit Proof of Consumption (Patient)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
+            ],
+            "url": "{{base_url}}/medication-consumption",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schedule_id\": \"SCHEDULE_ID_HERE\",\n  \"proof_image\": \"https://example.com/proof.jpg\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Consumptions (Doctor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medication-consumption"
+          }
+        },
+        {
+          "name": "Get My Consumptions (Patient)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
+            ],
+            "url": "{{base_url}}/medication-consumption/me"
+          }
+        },
+        {
+          "name": "Get Consumption by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medication-consumption/:id",
+            "variable": [{ "key": "id", "value": "CONSUMPTION_ID_HERE" }]
+          }
+        },
+        {
+          "name": "Verify Consumption - Approve (Doctor)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medication-consumption/:id/verify",
+            "variable": [{ "key": "id", "value": "CONSUMPTION_ID_HERE" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verification_status\": \"APPROVED\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify Consumption - Reject (Doctor)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medication-consumption/:id/verify",
+            "variable": [{ "key": "id", "value": "CONSUMPTION_ID_HERE" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verification_status\": \"REJECTED\",\n  \"rejection_reason\": \"Proof image is unclear\"\n}"
+            }
           }
         }
       ]

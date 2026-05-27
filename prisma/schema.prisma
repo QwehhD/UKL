@@ -13,8 +13,9 @@ enum Role {
 
 enum ScheduleStatus {
   PENDING
-  TRIGGERED
-  COMPLETED
+  WAITING_VERIFICATION
+  APPROVED
+  REJECTED
   MISSED
 }
 
@@ -25,9 +26,11 @@ model User {
   role       Role
   created_at DateTime @default(now())
 
-  patientProfile     PatientProfile?
-  schedulesAsDoctor  Schedule[] @relation("DoctorSchedules")
-  schedulesAsPatient Schedule[] @relation("PatientSchedules")
+  patientProfile          PatientProfile?
+  schedulesAsDoctor       Schedule[]              @relation("DoctorSchedules")
+  schedulesAsPatient      Schedule[]              @relation("PatientSchedules")
+  consumptionsAsPatient   MedicationConsumption[] @relation("PatientConsumptions")
+  verificationsAsDoctor   MedicationConsumption[] @relation("DoctorVerifications")
 }
 
 model PatientProfile {
@@ -60,7 +63,24 @@ model Schedule {
   status      ScheduleStatus @default(PENDING)
   created_at  DateTime       @default(now())
 
-  doctor   User     @relation("DoctorSchedules", fields: [doctor_id], references: [id])
-  patient  User     @relation("PatientSchedules", fields: [patient_id], references: [id])
-  medicine Medicine @relation(fields: [medicine_id], references: [id])
+  doctor       User                    @relation("DoctorSchedules", fields: [doctor_id], references: [id])
+  patient      User                    @relation("PatientSchedules", fields: [patient_id], references: [id])
+  medicine     Medicine                @relation(fields: [medicine_id], references: [id])
+  consumptions MedicationConsumption[]
+}
+
+model MedicationConsumption {
+  id                  String         @id @default(uuid())
+  schedule_id         String
+  patient_id          String
+  proof_image         String
+  verification_status ScheduleStatus @default(WAITING_VERIFICATION)
+  verified_by_id      String?
+  verified_at         DateTime?
+  rejection_reason    String?
+  created_at          DateTime       @default(now())
+
+  schedule     Schedule @relation(fields: [schedule_id], references: [id])
+  patient      User     @relation("PatientConsumptions", fields: [patient_id], references: [id])
+  verified_by  User?    @relation("DoctorVerifications", fields: [verified_by_id], references: [id])
 }
