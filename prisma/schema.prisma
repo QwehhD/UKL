@@ -34,12 +34,13 @@ model User {
 }
 
 model PatientProfile {
-  id              String @id @default(uuid())
-  user_id         String @unique
+  id              String    @id @default(uuid())
+  user_id         String    @unique
   full_name       String
   age             Int
   main_disease    String
   whatsapp_number String
+  deleted_at      DateTime?
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

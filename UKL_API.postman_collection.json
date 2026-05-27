@@ -89,6 +89,121 @@
       ]
     },
     {
+      "name": "Doctor - Patients",
+      "item": [
+        {
+          "name": "Get All Patients (Doctor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/patients"
+          }
+        },
+        {
+          "name": "Get Patient by ID (Doctor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/patients/:id",
+            "variable": [{ "key": "id", "value": "PATIENT_PROFILE_ID_HERE" }]
+          }
+        },
+        {
+          "name": "Create Patient (Doctor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/patients",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newpatient@example.com\",\n  \"password\": \"password123\",\n  \"full_name\": \"Jane Doe\",\n  \"age\": 28,\n  \"main_disease\": \"Hypertension\",\n  \"whatsapp_number\": \"081234567892\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Patient (Doctor)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/patients/:id",
+            "variable": [{ "key": "id", "value": "PATIENT_PROFILE_ID_HERE" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Jane Doe Updated\",\n  \"age\": 29,\n  \"main_disease\": \"Diabetes\",\n  \"whatsapp_number\": \"081234567893\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Patient - Soft Delete (Doctor)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/patients/:id",
+            "variable": [{ "key": "id", "value": "PATIENT_PROFILE_ID_HERE" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Doctor - Medications",
+      "item": [
+        {
+          "name": "Create Medication (Doctor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medications",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Metformin\",\n  \"slot_number\": 1,\n  \"stock\": 100\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Medication (Doctor)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medications/:id",
+            "variable": [{ "key": "id", "value": "MEDICATION_ID_HERE" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Metformin 500mg\",\n  \"stock\": 150\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Medication (Doctor)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/medications/:id",
+            "variable": [{ "key": "id", "value": "MEDICATION_ID_HERE" }]
+          }
+        }
+      ]
+    },
+    {
       "name": "Patient Profile",
       "item": [
         {
