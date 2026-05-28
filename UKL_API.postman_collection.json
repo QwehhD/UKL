@@ -92,28 +92,24 @@
       "name": "Doctor - Patients",
       "item": [
         {
-          "name": "Get All Patients (Doctor)",
+          "name": "Get All Patients",
           "request": {
             "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_doctor}}" }],
             "url": "{{base_url}}/patients"
           }
         },
         {
-          "name": "Get Patient by ID (Doctor)",
+          "name": "Get Patient by ID",
           "request": {
             "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_doctor}}" }],
             "url": "{{base_url}}/patients/:id",
             "variable": [{ "key": "id", "value": "PATIENT_PROFILE_ID_HERE" }]
           }
         },
         {
-          "name": "Create Patient (Doctor)",
+          "name": "Create Patient",
           "request": {
             "method": "POST",
             "header": [
@@ -128,7 +124,7 @@
           }
         },
         {
-          "name": "Update Patient (Doctor)",
+          "name": "Update Patient",
           "request": {
             "method": "PUT",
             "header": [
@@ -144,12 +140,10 @@
           }
         },
         {
-          "name": "Delete Patient - Soft Delete (Doctor)",
+          "name": "Delete Patient (Soft Delete)",
           "request": {
             "method": "DELETE",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_doctor}}" }],
             "url": "{{base_url}}/patients/:id",
             "variable": [{ "key": "id", "value": "PATIENT_PROFILE_ID_HERE" }]
           }
@@ -160,7 +154,7 @@
       "name": "Doctor - Medications",
       "item": [
         {
-          "name": "Create Medication (Doctor)",
+          "name": "Create Medication",
           "request": {
             "method": "POST",
             "header": [
@@ -175,7 +169,7 @@
           }
         },
         {
-          "name": "Update Medication (Doctor)",
+          "name": "Update Medication",
           "request": {
             "method": "PUT",
             "header": [
@@ -191,12 +185,10 @@
           }
         },
         {
-          "name": "Delete Medication (Doctor)",
+          "name": "Delete Medication",
           "request": {
             "method": "DELETE",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_doctor}}" }],
             "url": "{{base_url}}/medications/:id",
             "variable": [{ "key": "id", "value": "MEDICATION_ID_HERE" }]
           }
@@ -204,133 +196,10 @@
       ]
     },
     {
-      "name": "Patient Profile",
+      "name": "Doctor - Schedules",
       "item": [
         {
-          "name": "Create Patient Profile",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
-            ],
-            "url": "{{base_url}}/patient-profile",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"full_name\": \"John Doe\",\n  \"age\": 30,\n  \"main_disease\": \"Diabetes\",\n  \"whatsapp_number\": \"081234567890\"\n}"
-            }
-          }
-        },
-        {
-          "name": "Get My Profile",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
-            ],
-            "url": "{{base_url}}/patient-profile/me"
-          }
-        },
-        {
-          "name": "Get All Patients (Doctor)",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/patient-profile"
-          }
-        },
-        {
-          "name": "Update Patient Profile",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
-            ],
-            "url": "{{base_url}}/patient-profile",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"full_name\": \"John Doe Updated\",\n  \"age\": 31,\n  \"main_disease\": \"Hypertension\",\n  \"whatsapp_number\": \"081234567891\"\n}"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Medicine",
-      "item": [
-        {
-          "name": "Create Medicine (Doctor)",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/medicine",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Metformin\",\n  \"slot_number\": 1,\n  \"stock\": 100\n}"
-            }
-          }
-        },
-        {
-          "name": "Get All Medicines",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/medicine"
-          }
-        },
-        {
-          "name": "Get Medicine by ID",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/medicine/:id",
-            "variable": [{ "key": "id", "value": "MEDICINE_ID_HERE" }]
-          }
-        },
-        {
-          "name": "Update Medicine (Doctor)",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/medicine/:id",
-            "variable": [{ "key": "id", "value": "MEDICINE_ID_HERE" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"stock\": 150\n}"
-            }
-          }
-        },
-        {
-          "name": "Delete Medicine (Doctor)",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/medicine/:id",
-            "variable": [{ "key": "id", "value": "MEDICINE_ID_HERE" }]
-          }
-        }
-      ]
-    },
-    {
-      "name": "Schedule",
-      "item": [
-        {
-          "name": "Create Schedule (Doctor)",
+          "name": "Create Schedule",
           "request": {
             "method": "POST",
             "header": [
@@ -343,106 +212,6 @@
               "raw": "{\n  \"patient_id\": \"PATIENT_USER_ID_HERE\",\n  \"medicine_id\": \"MEDICINE_ID_HERE\",\n  \"dose\": \"1 tablet\",\n  \"start_date\": \"2026-06-01\",\n  \"end_date\": \"2026-06-30\",\n  \"times\": [\"08:00\", \"12:00\", \"18:00\"]\n}"
             }
           }
-        },
-        {
-          "name": "Get All Schedules (Doctor)",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/schedule"
-          }
-        },
-        {
-          "name": "Get My Schedules (Patient)",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
-            ],
-            "url": "{{base_url}}/schedule/me"
-          }
-        },
-        {
-          "name": "Get Schedule by ID",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/schedule/:id",
-            "variable": [{ "key": "id", "value": "SCHEDULE_ID_HERE" }]
-          }
-        },
-        {
-          "name": "Update Schedule Status (Doctor)",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/schedule/:id",
-            "variable": [{ "key": "id", "value": "SCHEDULE_ID_HERE" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"status\": \"MISSED\"\n}"
-            }
-          }
-        },
-        {
-          "name": "Delete Schedule (Doctor)",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/schedule/:id",
-            "variable": [{ "key": "id", "value": "SCHEDULE_ID_HERE" }]
-          }
-        }
-      ]
-    },
-    {
-      "name": "Patient",
-      "item": [
-        {
-          "name": "Get Today's Schedules (Patient)",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
-            ],
-            "url": "{{base_url}}/patient/schedules/today"
-          }
-        },
-        {
-          "name": "Upload Consumption Proof (Patient)",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
-            ],
-            "url": "{{base_url}}/patient/consumptions",
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                { "key": "proof_image", "type": "file", "src": "", "description": "Image file (jpg/png, max 5MB)" },
-                { "key": "schedule_id", "type": "text", "value": "SCHEDULE_ID_HERE" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Consumption History (Patient)",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
-            ],
-            "url": "{{base_url}}/patient/history"
-          }
         }
       ]
     },
@@ -450,28 +219,24 @@
       "name": "Doctor - Verifications",
       "item": [
         {
-          "name": "Get Waiting Verifications (Doctor)",
+          "name": "Get Waiting Verifications",
           "request": {
             "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_doctor}}" }],
             "url": "{{base_url}}/doctor/verifications"
           }
         },
         {
-          "name": "Approve Consumption (Doctor)",
+          "name": "Approve Consumption",
           "request": {
             "method": "PATCH",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_doctor}}" }],
             "url": "{{base_url}}/doctor/consumptions/:id/approve",
             "variable": [{ "key": "id", "value": "CONSUMPTION_ID_HERE" }]
           }
         },
         {
-          "name": "Reject Consumption (Doctor)",
+          "name": "Reject Consumption",
           "request": {
             "method": "PATCH",
             "header": [
@@ -489,84 +254,37 @@
       ]
     },
     {
-      "name": "Medication Consumption",
+      "name": "Patient",
       "item": [
         {
-          "name": "Submit Proof of Consumption (Patient)",
+          "name": "Get Today's Schedules",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_patient}}" }],
+            "url": "{{base_url}}/patient/schedules/today"
+          }
+        },
+        {
+          "name": "Upload Consumption Proof",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
-            ],
-            "url": "{{base_url}}/medication-consumption",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_patient}}" }],
+            "url": "{{base_url}}/patient/consumptions",
             "body": {
-              "mode": "raw",
-              "raw": "{\n  \"schedule_id\": \"SCHEDULE_ID_HERE\",\n  \"proof_image\": \"https://example.com/proof.jpg\"\n}"
+              "mode": "formdata",
+              "formdata": [
+                { "key": "proof_image", "type": "file", "src": "", "description": "Image file (jpg/png, max 5MB)" },
+                { "key": "schedule_id", "type": "text", "value": "SCHEDULE_ID_HERE" }
+              ]
             }
           }
         },
         {
-          "name": "Get All Consumptions (Doctor)",
+          "name": "Get Consumption History",
           "request": {
             "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/medication-consumption"
-          }
-        },
-        {
-          "name": "Get My Consumptions (Patient)",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
-            ],
-            "url": "{{base_url}}/medication-consumption/me"
-          }
-        },
-        {
-          "name": "Get Consumption by ID",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/medication-consumption/:id",
-            "variable": [{ "key": "id", "value": "CONSUMPTION_ID_HERE" }]
-          }
-        },
-        {
-          "name": "Verify Consumption - Approve (Doctor)",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/medication-consumption/:id/verify",
-            "variable": [{ "key": "id", "value": "CONSUMPTION_ID_HERE" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"verification_status\": \"APPROVED\"\n}"
-            }
-          }
-        },
-        {
-          "name": "Verify Consumption - Reject (Doctor)",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
-            ],
-            "url": "{{base_url}}/medication-consumption/:id/verify",
-            "variable": [{ "key": "id", "value": "CONSUMPTION_ID_HERE" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"verification_status\": \"REJECTED\",\n  \"rejection_reason\": \"Proof image is unclear\"\n}"
-            }
+            "header": [{ "key": "Authorization", "value": "Bearer {{token_patient}}" }],
+            "url": "{{base_url}}/patient/history"
           }
         }
       ]
