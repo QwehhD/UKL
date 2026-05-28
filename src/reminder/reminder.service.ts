@@ -28,9 +28,31 @@ export class ReminderService {
     for (const schedule of schedules) {
       const phone = schedule.patient.patientProfile?.whatsapp_number ?? 'unknown';
       const name = schedule.patient.patientProfile?.full_name ?? schedule.patient.email;
-      this.logger.log(
-        `[WhatsApp] To: ${phone} | Message: Halo ${name}, waktunya minum obat ${schedule.medicine.name} (${schedule.dose}). Jangan lupa ya!`,
-      );
+      const message = `Halo ${name}, waktunya minum obat ${schedule.medicine.name} (${schedule.dose}). Jangan lupa ya!`;
+
+      await this.sendWhatsApp(phone, message);
+    }
+  }
+
+  private async sendWhatsApp(phone: string, message: string) {
+    const token = process.env.FONNTE_TOKEN ?? '';
+    try {
+      const response = await fetch('https://api.fonnte.com/send', {
+        method: 'POST',
+        headers: {
+          Authorization: token,
+          'Content-Type': 'application/json',
+        } as HeadersInit,
+        body: JSON.stringify({ target: phone, message }),
+      });
+      const result = await response.json();
+      if (result.status) {
+        this.logger.log(`[WhatsApp] Sent to ${phone}`);
+      } else {
+        this.logger.error(`[WhatsApp] Failed to ${phone}: ${result.reason}`);
+      }
+    } catch (err) {
+      this.logger.error(`[WhatsApp] Error sending to ${phone}: ${(err as Error).message}`);
     }
   }
 }
