@@ -405,6 +405,48 @@
       ]
     },
     {
+      "name": "Patient",
+      "item": [
+        {
+          "name": "Get Today's Schedules (Patient)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
+            ],
+            "url": "{{base_url}}/patient/schedules/today"
+          }
+        },
+        {
+          "name": "Upload Consumption Proof (Patient)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
+            ],
+            "url": "{{base_url}}/patient/consumptions",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "proof_image", "type": "file", "src": "", "description": "Image file (jpg/png, max 5MB)" },
+                { "key": "schedule_id", "type": "text", "value": "SCHEDULE_ID_HERE" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Consumption History (Patient)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_patient}}" }
+            ],
+            "url": "{{base_url}}/patient/history"
+          }
+        }
+      ]
+    },
+    {
       "name": "Medication Consumption",
       "item": [
         {
