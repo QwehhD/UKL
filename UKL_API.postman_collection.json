@@ -447,6 +447,48 @@
       ]
     },
     {
+      "name": "Doctor - Verifications",
+      "item": [
+        {
+          "name": "Get Waiting Verifications (Doctor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/doctor/verifications"
+          }
+        },
+        {
+          "name": "Approve Consumption (Doctor)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/doctor/consumptions/:id/approve",
+            "variable": [{ "key": "id", "value": "CONSUMPTION_ID_HERE" }]
+          }
+        },
+        {
+          "name": "Reject Consumption (Doctor)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token_doctor}}" }
+            ],
+            "url": "{{base_url}}/doctor/consumptions/:id/reject",
+            "variable": [{ "key": "id", "value": "CONSUMPTION_ID_HERE" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rejection_reason\": \"Proof image is unclear\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Medication Consumption",
       "item": [
         {
