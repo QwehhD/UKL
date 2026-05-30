@@ -11,6 +11,22 @@ import { UpdateMedicationDto } from './dto/update-medication.dto';
 export class MedicationsService {
   constructor(private prisma: PrismaService) {}
 
+  async findAll() {
+    return this.prisma.medicine.findMany({
+      orderBy: { slot_number: 'asc' },
+      include: { schedules: { select: { id: true, status: true } } },
+    });
+  }
+
+  async findOne(id: string) {
+    const medicine = await this.prisma.medicine.findUnique({
+      where: { id },
+      include: { schedules: { select: { id: true, status: true } } },
+    });
+    if (!medicine) throw new NotFoundException('Medication not found');
+    return medicine;
+  }
+
   async create(dto: CreateMedicationDto) {
     const exists = await this.prisma.medicine.findUnique({
       where: { slot_number: dto.slot_number },

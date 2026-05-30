@@ -1,37 +1,46 @@
--- Fully handle partial DB state from previous failed runs.
--- DB may have: ScheduleStatus_old (renamed from ScheduleStatus), Schedule.status typed as either.
--- Goal: end state has ScheduleStatus enum with correct values, all tables exist.
+-- Handle both scenarios:
+-- A) Shadow DB (fresh): ScheduleStatus exists with old values (PENDING, TRIGGERED, COMPLETED, MISSED)
+-- B) Actual DB: ScheduleStatus may already have correct values or may not exist
 
--- Step 1: Create ScheduleStatus if it doesn't exist yet
+-- Step 1: Rename old ScheduleStatus if it lacks WAITING_VERIFICATION
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ScheduleStatus')
+    AND NOT EXISTS (
+      SELECT 1 FROM pg_enum e
+      JOIN pg_type t ON e.enumtypid = t.oid
+      WHERE t.typname = 'ScheduleStatus' AND e.enumlabel = 'WAITING_VERIFICATION'
+    )
+  THEN
+    ALTER TYPE "ScheduleStatus" RENAME TO "ScheduleStatus_old";
+  END IF;
+END $$;
+
+-- Step 2: Create ScheduleStatus with correct values (skipped if already correct)
 DO $$ BEGIN
   CREATE TYPE "ScheduleStatus" AS ENUM ('PENDING', 'WAITING_VERIFICATION', 'APPROVED', 'REJECTED', 'MISSED');
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- Step 2: Fix Schedule.status column — handle both old type names
+-- Step 3: Fix Schedule.status column if it uses the old type
 DO $$
-DECLARE col_type text;
 BEGIN
-  SELECT data_type INTO col_type
-  FROM information_schema.columns
-  WHERE table_name = 'Schedule' AND column_name = 'status';
-
-  -- Drop default first
-  ALTER TABLE "Schedule" ALTER COLUMN "status" DROP DEFAULT;
-
-  -- Cast column to new ScheduleStatus
-  EXECUTE 'ALTER TABLE "Schedule" ALTER COLUMN "status" TYPE "ScheduleStatus" USING status::text::"ScheduleStatus"';
-
-  -- Re-add default
-  ALTER TABLE "Schedule" ALTER COLUMN "status" SET DEFAULT 'PENDING';
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_name = 'Schedule' AND column_name = 'status'
+  ) THEN
+    ALTER TABLE "Schedule" ALTER COLUMN "status" DROP DEFAULT;
+    ALTER TABLE "Schedule" ALTER COLUMN "status" TYPE "ScheduleStatus" USING status::text::"ScheduleStatus";
+    ALTER TABLE "Schedule" ALTER COLUMN "status" SET DEFAULT 'PENDING';
+  END IF;
 END $$;
 
--- Step 3: Drop old type if exists
+-- Step 4: Drop old type if exists
 DROP TYPE IF EXISTS "ScheduleStatus_old";
 
--- Step 4: Add deleted_at to PatientProfile
+-- Step 5: Add deleted_at to PatientProfile
 ALTER TABLE "PatientProfile" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMP(3);
 
--- Step 5: Create MedicationConsumption table
+-- Step 6: Create MedicationConsumption table
 CREATE TABLE IF NOT EXISTS "MedicationConsumption" (
     "id" TEXT NOT NULL,
     "schedule_id" TEXT NOT NULL,

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Put,
@@ -28,6 +29,21 @@ import { MedicationsService } from './medications.service';
 @Controller('medications')
 export class MedicationsController {
   constructor(private medicationsService: MedicationsService) {}
+
+  @ApiOperation({ summary: 'Get all medications with stock info (Doctor only)' })
+  @ApiResponse({ status: 200, description: 'List of medications' })
+  @Get()
+  findAll() {
+    return this.medicationsService.findAll();
+  }
+
+  @ApiOperation({ summary: 'Get medication by ID with full info (Doctor only)' })
+  @ApiResponse({ status: 200, description: 'Medication detail' })
+  @ApiResponse({ status: 404, description: 'Medication not found' })
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.medicationsService.findOne(id);
+  }
 
   @ApiOperation({ summary: 'Create a new medication (Doctor only)' })
   @ApiResponse({ status: 201, description: 'Medication created successfully' })
