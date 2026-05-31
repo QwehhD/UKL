@@ -1,6 +1,8 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { ScheduleStatus } from '@prisma/client';
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsDateString,
   IsEnum,
   IsOptional,
@@ -19,10 +21,17 @@ export class UpdateScheduleDto {
   @IsString()
   dose?: string;
 
-  @ApiPropertyOptional({ example: '08:00' })
+  @ApiPropertyOptional({ example: '2026-06-30' })
   @IsOptional()
-  @IsString()
-  time?: string;
+  @IsDateString()
+  end_date?: string;
+
+  @ApiPropertyOptional({ example: ['08:00', '22:59'] })
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  times?: string[];
 
   @ApiPropertyOptional({ enum: ScheduleStatus })
   @IsOptional()

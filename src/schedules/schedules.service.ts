@@ -65,7 +65,11 @@ export class SchedulesService {
       if (!medicine) throw new NotFoundException('Medicine not found');
     }
 
-    return this.prisma.schedule.update({ where: { id }, data: dto });
+    const { times, end_date, ...rest } = dto;
+    const data: any = { ...rest };
+    if (times && times.length > 0) data.time = times[0];
+
+    return this.prisma.schedule.update({ where: { id }, data });
   }
 
   async remove(id: string) {
