@@ -24,8 +24,13 @@ export class AuthService {
 
     const hashed = await bcrypt.hash(dto.password, 12);
 
+    const usernameTaken = await this.prisma.user.findUnique({
+      where: { username: dto.username },
+    });
+    if (usernameTaken) throw new ConflictException('Username already taken');
+
     const user = await this.prisma.user.create({
-      data: { email: dto.email, password: hashed, role: dto.role },
+      data: { email: dto.email, username: dto.username, password: hashed, role: dto.role },
     });
 
     const { password: _pw, ...result } = user;

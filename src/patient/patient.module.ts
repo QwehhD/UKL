@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { BadRequestException, Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -15,6 +15,12 @@ import { PatientService } from './patient.service';
           cb(null, `proof-${unique}${extname(file.originalname)}`);
         },
       }),
+      fileFilter: (_req, file, cb) => {
+        if (!file.mimetype.match(/^image\/(jpeg|png|jpg)$/)) {
+          return cb(new BadRequestException('Only jpg/png images are allowed'), false);
+        }
+        cb(null, true);
+      },
     }),
   ],
   controllers: [PatientController],

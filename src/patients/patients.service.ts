@@ -39,9 +39,17 @@ export class PatientsService {
     if (exists) throw new ConflictException('Email already registered');
 
     const hashed = await bcrypt.hash(dto.password, 12);
+    const baseUsername = dto.full_name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    let username = baseUsername;
+    let suffix = 1;
+    while (await this.prisma.user.findUnique({ where: { username } })) {
+      username = `${baseUsername}${suffix++}`;
+    }
+
     const user = await this.prisma.user.create({
       data: {
         email: dto.email,
+        username,
         password: hashed,
         role: 'PATIENT',
         patientProfile: {
