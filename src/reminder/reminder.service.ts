@@ -37,13 +37,16 @@ export class ReminderService {
   private async sendWhatsApp(phone: string, message: string) {
     const token = process.env.FONNTE_TOKEN ?? '';
     try {
+      const form = new URLSearchParams();
+      form.append('target', phone);
+      form.append('message', message);
+
       const response = await fetch('https://api.fonnte.com/send', {
         method: 'POST',
         headers: {
           Authorization: token,
-          'Content-Type': 'application/json',
         } as HeadersInit,
-        body: JSON.stringify({ target: phone, message }),
+        body: form,
       });
       const result = await response.json();
       if (result.status) {
