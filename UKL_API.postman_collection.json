@@ -259,7 +259,7 @@
             "variable": [{ "key": "id", "value": "SCHEDULE_ID_HERE" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"dose\": \"2 tablets\",\n  \"end_date\": \"2026-07-31\",\n  \"times\": [\"08:00\", \"20:00\"]\n}"
+              "raw": "{\n  \"dose\": \"2 tablets\",\n  \"end_date\": \"2026-07-31\",\n  \"times\": [\"08:00\"]\n}"
             }
           }
         },
